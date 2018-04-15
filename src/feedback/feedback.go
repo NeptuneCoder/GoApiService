@@ -202,10 +202,10 @@ func sendMsg2DD(uid, VpnId, Problem, ContactInfo, appName string) {
 	feedBackMsg["appName"] = appName
 	feedBackMsg["反馈内容"] = Problem
 	feedBackMsg["联系方式"] = ContactInfo
-	feedBackMsg["意见和日志文件链接"] = initialize.BaseConfig.Url3 + uid
+	feedBackMsg["意见和日志文件链接"] = initialize.BaseConfig.BgUrl + uid
 	msg, _ := json.Marshal(feedBackMsg)
 
-	athttp.HttpRequest(utils.SendNotify(initialize.BaseConfig.Url1, string(msg)))
+	athttp.HttpRequest(utils.SendNotify(initialize.BaseConfig.LogRebootUrl, string(msg)))
 }
 
 func WriteFile2Local(uid string, fileHeaders []*multipart.FileHeader) error {

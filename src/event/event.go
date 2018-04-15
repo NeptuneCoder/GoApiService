@@ -95,6 +95,6 @@ func PaymentStatus(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(result, &ps)
 	insertPayStatusData(ps)
 
-	athttp.HttpRequest(utils.SendNotify(initialize.BaseConfig.Url0, string(bytes.NewBuffer(result).String())))
+	athttp.HttpRequest(utils.SendNotify(initialize.BaseConfig.PayRebootUrl, string(bytes.NewBuffer(result).String())))
 	utils.OkStatus(w, "")
 }

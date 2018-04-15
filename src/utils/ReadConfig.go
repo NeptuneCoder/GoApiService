@@ -23,7 +23,7 @@ func ReadBaseConfig(path string) (*Config, error) {
 }
 
 type Config struct {
-	Url0 string
-	Url1 string
-	Url3 string
+	PayRebootUrl string `json:"payRebootUrl"`
+	LogRebootUrl string `json:"logRebootUrl"`
+	BgUrl        string `json:"bgUrl"`
 }
