@@ -1,0 +1,5 @@
+{
+  "payRebootUrl": "https://oapi.dingtalk.com/robot/send?access_token=",
+  "logRebootUrl": "https://oapi.dingtalk.com/robot/send?access_token=",
+  "bgUrl": "http://www.xx.com/feedback?accountId="
+}

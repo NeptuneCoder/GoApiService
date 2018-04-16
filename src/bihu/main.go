@@ -7,6 +7,7 @@ import (
 	"feedback"
 	"event"
 	"product"
+	"user"
 )
 
 func main() {
@@ -21,6 +22,9 @@ func main() {
 	http.HandleFunc("/save/event", Safe(event.SaveEvent))
 
 	http.HandleFunc("/serve/showSetMeal2", Safe(product.GetProduct))
+
+	//个人账号相关的接口
+	http.HandleFunc("/user/oauthLogin", Safe(user.Login))
 
 	http.ListenAndServe(":3000", nil)
 }
