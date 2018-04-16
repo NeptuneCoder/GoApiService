@@ -15,19 +15,19 @@ import (
 )
 
 type Event struct {
-	Event      string
-	Timestamp  string
-	TimePhone  string
-	Uuid       string
-	Androidid  string
-	PhoneType  string
-	Language   string
-	Country    string
-	AppVersion string
-	OsVersion  string
-	Segment    string
-	Level      string
-	SdkVersion string
+	Timestamp  string `json:"timestamp"`
+	Event      string `json:"event"`
+	TimePhone  string `json:"timePhone"`
+	Uuid       string `json:"uuid"`
+	Androidid  string `json:"androidid"`
+	PhoneType  string `json:"phoneType"`
+	Language   string `json:"language"`
+	Country    string `json:"country"`
+	AppVersion string `json:"appVersion"`
+	OsVersion  string `json:"osVersion"`
+	Segment    string `json:"segment"`
+	Level      string `json:"level"`
+	SdkVersion string `json:"sdkVersion"`
 }
 
 func SaveEvent(w http.ResponseWriter, r *http.Request) {

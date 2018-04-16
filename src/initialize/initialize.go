@@ -6,7 +6,6 @@ import (
 	"github.com/yanghai23/GoLib/atdb"
 	"database/sql"
 	"utils"
-	"github.com/astaxie/beego/config"
 )
 
 var Db *sql.DB
@@ -18,6 +17,6 @@ func init() {
 	Db, err = atdb.InitMysql(*config)
 	aterr.CheckErr(err)
 
-	BaseConfig, err = utils.ReadBaseConfig(atfile.GetCurrentDirectory() + "config.json")
+	BaseConfig, err = utils.ReadBaseConfig(atfile.GetCurrentDirectory() + "/config.json")
 	aterr.CheckErr(err)
 }
