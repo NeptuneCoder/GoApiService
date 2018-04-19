@@ -4,6 +4,7 @@ import (
 	"testing"
 	"net/http/httptest"
 	"net/http"
+	"net/url"
 )
 
 func TestGetProduct(t *testing.T) {
@@ -16,5 +17,11 @@ func TestGetProduct(t *testing.T) {
 func TestPaymentInfo(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := &http.Request{}
+	header := http.Header{}
+	header.Add("language", "CN")
+	r.Header = header
+	data := url.Values{}
+	data.Add("key", "this is test data")
+	r.Form = data
 	PaymentInfo(w, r)
 }
