@@ -14,6 +14,7 @@ import (
 	"time"
 	"initialize"
 	"utils"
+	"status/statusCode"
 )
 
 func insertProblemData(uid, aid, problem, contact, timeStr, appName, version string) {
@@ -74,13 +75,10 @@ func FindProblemContent(w http.ResponseWriter, r *http.Request) {
 		data = append(data, plm)
 
 	}
-	result["code"] = 200
-	result["msg"] = "查询成功"
-	result["data"] = data
-	fmt.Println(string(len(result)))
+
 	res, err := json.Marshal(result)
 	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, string(res))
+	utils.OkStatus(w, statusCode.SUCCESS, "查询成功", string(res))
 
 }
 
@@ -110,13 +108,9 @@ func LastNewContent(w http.ResponseWriter, r *http.Request) {
 		data = append(data, plm)
 
 	}
-	result["code"] = 200
-	result["msg"] = "查询成功"
-	result["data"] = data
-	fmt.Println(string(len(result)))
 	res, err := json.Marshal(result)
 	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, string(res))
+	utils.OkStatus(w, statusCode.SUCCESS, "查询成功", string(res))
 
 }
 func GetFile(w http.ResponseWriter, r *http.Request) {

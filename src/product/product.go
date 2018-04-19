@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 
 	"mysessoin"
+	"status/statusCode"
+	"status/statusMsg"
 )
 
 func GetOldProductInfo(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +39,7 @@ type Product struct {
 func GetProductInfo(w http.ResponseWriter, r *http.Request) {
 	err := mysessoin.CheckSession(r)
 	if err != nil {
-		utils.OkStatus(w, 400, "登录状态失效", "")
+		utils.OkStatus(w, statusCode.LOGIN_INVALID, statusMsg.LOGIN_INVALID, "")
 		return
 	}
 
@@ -58,12 +60,12 @@ func GetProductInfo(w http.ResponseWriter, r *http.Request) {
 	}
 	buf, err := json.Marshal(service)
 	aterr.CheckErr(err)
-	utils.OkStatus(w, 200, "服务类型", string(buf))
+	utils.OkStatus(w, statusCode.SUCCESS, "服务类型", string(buf))
 }
 
 func GenerateOrder(w http.ResponseWriter, r *http.Request) {
 
-	utils.OkStatus(w, 200, "支付成功", "{\"key\":\"\"}")
+	utils.OkStatus(w, statusCode.SUCCESS, "支付成功", "{\"key\":\"\"}")
 }
 
 func PaymentInfo(w http.ResponseWriter, r *http.Request) {
@@ -71,5 +73,5 @@ func PaymentInfo(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Header.Get("language"))
 	fmt.Println("value:", r.Form.Get("key"))
 
-	utils.OkStatus(w, 200, "支付成功", "{\"key\":\"\"}")
+	utils.OkStatus(w, statusCode.SUCCESS, "支付成功", "{\"key\":\"\"}")
 }
