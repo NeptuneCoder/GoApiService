@@ -96,5 +96,5 @@ func PaymentStatus(w http.ResponseWriter, r *http.Request) {
 	insertPayStatusData(ps)
 
 	athttp.HttpRequest(utils.SendNotify(initialize.BaseConfig.PayRebootUrl, string(bytes.NewBuffer(result).String())))
-	utils.OkStatus(w, "")
+	utils.OkStatus(w, 300,"提交成功","")
 }
