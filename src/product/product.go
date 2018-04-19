@@ -6,8 +6,16 @@ import (
 	"utils"
 )
 
-func GetProduct(w http.ResponseWriter, r *http.Request) {
+func GetOldProductInfo(w http.ResponseWriter, r *http.Request) {
 
+}
+func GetProductInfo(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func GenerateOrder(w http.ResponseWriter, r *http.Request)  {
+
+	utils.OkStatus(w, 200,"支付成功", "{\"key\":\"\"}")
 }
 
 func PaymentInfo(w http.ResponseWriter, r *http.Request) {
