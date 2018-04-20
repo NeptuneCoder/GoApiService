@@ -7,13 +7,11 @@ import (
 	"net/url"
 )
 
-func TestGetProduct(t *testing.T) {
+func TestGetOldProductInfo(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := &http.Request{}
-	GetProduct(w, r)
-
+	GetOldProductInfo(w, r)
 }
-
 func TestPaymentInfo(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := &http.Request{}
