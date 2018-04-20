@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"unsafe"
 	"errors"
+	"initialize"
 )
 
 var userStatus = make(map[string]Cookie)
@@ -29,9 +30,7 @@ func CheckSession(r *http.Request) (res *Res, err error) {
 	//	if r.Method == "POST" {
 	//		r.ParseForm()
 	//	}else{
-	//
 	//	}
-	//
 	//})
 	if r.Method == "POST" {
 		return custom(r, func() {
@@ -43,6 +42,9 @@ func CheckSession(r *http.Request) (res *Res, err error) {
 }
 
 //函数作为参数只能放在使用的地方定义，或者说，参数一样的方法就是相同的函数
+//第一个参数是请求信息
+//第二个参数是决定怎么解析请求中的数据
+//第三个参数是解决怎么实现数据库查询功能
 func custom(r *http.Request, f func()) (res *Res, err error) {
 	f()
 	//获取头信息，token
@@ -55,6 +57,7 @@ func custom(r *http.Request, f func()) (res *Res, err error) {
 		//查询数据库
 		fmt.Println("is  empty == ", unsafe.Sizeof(cookie))
 	}
+
 	//判断市场是否有效
 
 	//查询数据库后，还是为空，则反馈错误
@@ -62,5 +65,13 @@ func custom(r *http.Request, f func()) (res *Res, err error) {
 	//判断是否登录状态有效,通过判断时长，确定是否有效
 
 	//如果无效，返回异常
+	//4 TODO 指针类型或者是接口类型才可以将nil作为默认值，将其作为返回值，
+	//5 换句话说，结构体直接就是实体，不存在nil的情况，结构体内的字段信息是默认值
 	return nil, errors.New(statusMsg.TOKEN_INVALID)
+}
+
+func QueryToken(authorization string) (res *Res, err error) {
+	initialize.Db.Query("SELECT sessionTab")
+
+	return nil, nil
 }

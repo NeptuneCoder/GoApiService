@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"utils"
 	"github.com/yanghai23/GoLib/aterr"
-	"initialize"
 	"encoding/json"
 	"mysessoin"
 	"status/statusCode"
 	"status/statusMsg"
+	"initialize"
 )
 
 func GetOldProductInfo(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ type Product struct {
 }
 
 func GetProductInfo(w http.ResponseWriter, r *http.Request) {
-	err := mysessoin.CheckSession(r)
+	res, err := mysessoin.CheckSession(r)
 	if err != nil {
 		utils.OkStatus(w, statusCode.LOGIN_INVALID, statusMsg.LOGIN_INVALID, "")
 		return
@@ -45,7 +45,7 @@ func GetProductInfo(w http.ResponseWriter, r *http.Request) {
 	//获取登陆token，验证用户是否合法
 	//获取用户名，判断是否已购买过商品
 	//获取所在国家
-	rows, err := initialize.Db.Query("SELECT serviceType,ad,video,speed,image,serviceExplain FROM ServiceTypeTab WHERE accountId = ?", accountId)
+	rows, err := initialize.Db.Query("SELECT serviceType,ad,video,speed,image,serviceExplain FROM ServiceTypeTab")
 	defer rows.Close()
 	var service []ServiceType
 	if err != nil {
