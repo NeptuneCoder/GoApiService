@@ -5,6 +5,7 @@ import (
 	"status/statusMsg"
 	"fmt"
 	"unsafe"
+	"errors"
 )
 
 var userStatus = make(map[string]Cookie)
@@ -21,18 +22,28 @@ type Res struct {
 	ErrCode int
 }
 
-//TODO 需要处理不同的请求类型过来时，获取token值
+//2 。TODO 需要处理不同的请求类型过来时，获取token值
 func CheckSession(r *http.Request) (res *Res, err error) {
+	//return normal(r, func() { //3. 这是写的时候想到的一种写法，后面发现遇到为做处理的类型，不知道怎么兼容
+	//	//1 。TODO 如果这个判断放在这里面，当遇到不支持的时候，怎么处理呢？x
+	//	if r.Method == "POST" {
+	//		r.ParseForm()
+	//	}else{
+	//
+	//	}
+	//
+	//})
 	if r.Method == "POST" {
-		return normal(r, func() {
+		return custom(r, func() {
 			r.ParseForm()
 		})
 	}
-	return nil, nil
+
+	return nil, errors.New(statusMsg.REQUEST_TYPE_NO_SURPPORT)
 }
 
 //函数作为参数只能放在使用的地方定义，或者说，参数一样的方法就是相同的函数
-func normal(r *http.Request, f func()) (res *Res, err error) {
+func custom(r *http.Request, f func()) (res *Res, err error) {
 	f()
 	//获取头信息，token
 	token := r.Header.Get("authorization")
