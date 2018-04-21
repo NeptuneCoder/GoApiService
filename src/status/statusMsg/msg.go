@@ -7,4 +7,5 @@ const (
 	LOGIN_INVALID            = "登录失效"
 	TOKEN_INVALID            = "该用户登录过期,请重新登录"
 	REQUEST_TYPE_NO_SURPPORT = "该请求类型，还不支持"
+	REFRESH_TOKEN_FAILED     = "刷新token失败"
 )

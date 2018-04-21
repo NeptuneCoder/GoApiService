@@ -7,20 +7,54 @@ import (
 	"unsafe"
 	"errors"
 	"initialize"
+	"utils"
+	"time"
 )
 
-var userStatus = make(map[string]Cookie)
+var userStatus = make(map[string]*Cookie)
 
 type Cookie struct {
 	AccountId string
 	Token     string
-	Time      string
-	ValidTime string
+	CurTime   int64
+	ValidTime time.Duration
 }
 
 type Res struct {
 	ErrMsg  string
 	ErrCode int
+}
+
+func GenerateCookie(accountId string) (error) {
+	//gernate token
+
+	defer func() error {
+		if e, ok := recover().(error); ok {
+			return e
+		}
+		return nil
+	}()
+	cookie := &Cookie{AccountId: accountId,                     //
+		Token: string(utils.Krand(28, utils.KC_RAND_KIND_ALL)), //
+		CurTime: time.Now().UnixNano(),                         //
+		ValidTime: 24 * 10 * 60 * 60 * time.Second}
+
+	userStatus[accountId] = cookie
+	fmt.Println(cookie.Token)
+
+	return nil
+}
+
+func UpdateTokenStatus(accountId string) error {
+	//如果内存中有，更新该内存中的数据
+	cookie := userStatus[accountId]
+	if cookie.AccountId != "" {
+		cookie.ValidTime = 24 * 10 * 60 * 60 * time.Second
+		return nil
+	}
+	// 如果没有含有，则查询数据库，更新数据库中的数据
+	return errors.New(statusMsg.REFRESH_TOKEN_FAILED)
+
 }
 
 //2 。TODO 需要处理不同的请求类型过来时，获取token值
@@ -36,6 +70,8 @@ func CheckSession(r *http.Request) (res *Res, err error) {
 		return custom(r, func() {
 			r.ParseForm()
 		})
+	} else if r.Method == "GET" {
+
 	}
 
 	return nil, errors.New(statusMsg.REQUEST_TYPE_NO_SURPPORT)
@@ -56,6 +92,13 @@ func custom(r *http.Request, f func()) (res *Res, err error) {
 	if cookie.AccountId == "" {
 		//查询数据库
 		fmt.Println("is  empty == ", unsafe.Sizeof(cookie))
+		cookie, err = QueryTokenByDb(token)
+	}
+
+	if cookie.CurTime+int64(cookie.ValidTime) > time.Now().UnixNano() {
+
+		//TODO 未失效
+		return nil, nil
 	}
 
 	//判断市场是否有效
@@ -70,8 +113,14 @@ func custom(r *http.Request, f func()) (res *Res, err error) {
 	return nil, errors.New(statusMsg.TOKEN_INVALID)
 }
 
-func QueryToken(authorization string) (res *Res, err error) {
-	initialize.Db.Query("SELECT sessionTab")
-
-	return nil, nil
+func QueryTokenByDb(token string) (res *Cookie, err error) {
+	ck := &Cookie{Token: token}
+	rows, err := initialize.Db.Query("SELECT accountId,time,validTime FROM CookieTab WHERE token = ?", token)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		rows.Scan(ck.AccountId, ck.CurTime, ck.ValidTime)
+	}
+	return ck, nil
 }
