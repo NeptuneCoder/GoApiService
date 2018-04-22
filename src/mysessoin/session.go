@@ -20,6 +20,17 @@ type Cookie struct {
 	ValidTime time.Duration
 }
 
+func (this Cookie) isExist() bool {
+	return this.AccountId != ""
+}
+func (this Cookie) updateValidTime() {
+	this.ValidTime = 24 * 10 * 60 * 60 * time.Second
+}
+
+func (this Cookie) isValid() bool {
+	return this.CurTime+int64(this.ValidTime) > time.Now().UnixNano()
+}
+
 type Res struct {
 	ErrMsg  string
 	ErrCode int
@@ -43,18 +54,6 @@ func GenerateCookie(accountId string) (error) {
 	fmt.Println(cookie.Token)
 
 	return nil
-}
-
-func UpdateTokenStatus(accountId string) error {
-	//如果内存中有，更新该内存中的数据
-	cookie := userStatus[accountId]
-	if cookie.AccountId != "" {
-		cookie.ValidTime = 24 * 10 * 60 * 60 * time.Second
-		return nil
-	}
-	// 如果没有含有，则查询数据库，更新数据库中的数据
-	return errors.New(statusMsg.REFRESH_TOKEN_FAILED)
-
 }
 
 //2 。TODO 需要处理不同的请求类型过来时，获取token值
@@ -89,15 +88,15 @@ func custom(r *http.Request, f func()) (res *Res, err error) {
 	//查询缓存中是否有该信息
 	cookie := userStatus[token]
 
-	if cookie.AccountId == "" {
+	if !cookie.isExist() {
 		//查询数据库
 		fmt.Println("is  empty == ", unsafe.Sizeof(cookie))
-		cookie, err = QueryTokenByDb(token)
+		//TODO 数据库的先不测试
+		//cookie, err = QueryTokenByDb(token)
 	}
 
-	if cookie.CurTime+int64(cookie.ValidTime) > time.Now().UnixNano() {
-
-		//TODO 未失效
+	if cookie.isValid() {
+		cookie.updateValidTime()
 		return nil, nil
 	}
 
