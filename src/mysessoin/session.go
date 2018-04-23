@@ -13,12 +13,7 @@ import (
 
 var userStatus = make(map[string]*Cookie)
 
-type Cookie struct {
-	AccountId string
-	Token     string
-	CurTime   int64
-	ValidTime time.Duration
-}
+
 
 func (this Cookie) isExist() bool {
 	return this.AccountId != ""

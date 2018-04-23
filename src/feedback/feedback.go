@@ -18,6 +18,7 @@ import (
 )
 
 func insertProblemData(uid, aid, problem, contact, timeStr, appName, version string) {
+
 	//插入数据
 	stmt, err := initialize.Db.Prepare("INSERT INTO ProblemInfo(accountId,vpnId,problem,contactInfo,date,appName,version) VALUES(?,?,?,?,?,?,?)")
 	defer stmt.Close()
@@ -40,20 +41,7 @@ func insertLogData(uid, time, path, fileName string) {
 	fmt.Println(id)
 }
 
-type LogFile struct {
-	AccountId string
-	Date      string
-	Path      string
-	FileName  string
-}
-type ProblemInfo struct {
-	Id          int
-	AccountId   string
-	VpnId       string
-	Problem     string
-	ContactInfo string
-	Date        string
-}
+
 
 func FindProblemContent(w http.ResponseWriter, r *http.Request) {
 	vpnId := r.FormValue("vpnId")

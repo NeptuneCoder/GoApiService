@@ -16,24 +16,6 @@ func GetOldProductInfo(w http.ResponseWriter, r *http.Request) {
 
 }
 
-type ServiceType struct {
-	ServiceType    string `josn:"serviceType"`
-	Ad             string `josn:"ad"`
-	Video          string `josn:"video"`
-	Speed          string `josn:"speed"`
-	Image          string `josn:"image"`
-	ServiceExplain string `josn:"serviceExplain"`
-	Products       []Product
-}
-
-type Product struct {
-	serviceType string
-	productId   string
-	price       string
-	priceUnit   string
-	validTime   string
-	timeUnit    string
-}
 
 func GetProductInfo(w http.ResponseWriter, r *http.Request) {
 	_, err := mysessoin.CheckSession(r)
@@ -71,6 +53,5 @@ func PaymentInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	fmt.Println(r.Header.Get("language"))
 	fmt.Println("value:", r.Form.Get("key"))
-
 	utils.OkStatus(w, statusCode.SUCCESS, "支付成功", "{\"key\":\"\"}")
 }

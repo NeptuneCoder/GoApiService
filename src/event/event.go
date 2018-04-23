@@ -14,21 +14,7 @@ import (
 	"utils"
 )
 
-type Event struct {
-	Timestamp  string `json:"timestamp"`
-	Event      string `json:"event"`
-	TimePhone  string `json:"timePhone"`
-	Uuid       string `json:"uuid"`
-	Androidid  string `json:"androidid"`
-	PhoneType  string `json:"phoneType"`
-	Language   string `json:"language"`
-	Country    string `json:"country"`
-	AppVersion string `json:"appVersion"`
-	OsVersion  string `json:"osVersion"`
-	Segment    string `json:"segment"`
-	Level      string `json:"level"`
-	SdkVersion string `json:"sdkVersion"`
-}
+
 
 func SaveEvent(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
@@ -58,18 +44,7 @@ func SaveEvent2DB(data *Event) {
 	aterr.CheckErr(err)
 }
 
-type PayStatus struct {
-	VpnId       string
-	Country     string
-	Version     string
-	DollarPrice string
-	Type        string
-	ResultCode  string
-	Level       string
-	Code        string
-	TimeStr     string
-	Result      string
-}
+
 
 func insertPayStatusData(ps *PayStatus) {
 	fmt.Println("ps.Result === === === === ", ps.Result)
