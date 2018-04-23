@@ -41,8 +41,6 @@ func insertLogData(uid, time, path, fileName string) {
 	fmt.Println(id)
 }
 
-
-
 func FindProblemContent(w http.ResponseWriter, r *http.Request) {
 	vpnId := r.FormValue("vpnId")
 	fmt.Println("vpnId", "vpnId = "+vpnId)
@@ -52,10 +50,10 @@ func FindProblemContent(w http.ResponseWriter, r *http.Request) {
 		rows.Close()
 	}()
 	result := make(map[string]interface{})
-	data := []ProblemInfo{}
+	var data []ProblemInfoParam
 	aterr.CheckErr(err)
 	for rows.Next() {
-		plm := ProblemInfo{}
+		plm := ProblemInfoParam{}
 		err = rows.Scan(&plm.VpnId, &plm.AccountId, &plm.Problem, &plm.ContactInfo, &plm.Date)
 		aterr.CheckErr(err)
 		res, _ := json.Marshal(plm)
@@ -85,10 +83,10 @@ func LastNewContent(w http.ResponseWriter, r *http.Request) {
 	rows, err := initialize.Db.Query("SELECT _id,vpnId,accountId,problem,contactInfo,date FROM ProblemInfo ORDER BY _id DESC limit ?", qb.Count)
 	defer rows.Close()
 	result := make(map[string]interface{})
-	data := []ProblemInfo{}
+	data := []ProblemInfoParam{}
 	aterr.CheckErr(err)
 	for rows.Next() {
-		plm := ProblemInfo{}
+		plm := ProblemInfoParam{}
 		err = rows.Scan(&plm.Id, &plm.VpnId, &plm.AccountId, &plm.Problem, &plm.ContactInfo, &plm.Date)
 		aterr.CheckErr(err)
 		res, _ := json.Marshal(plm)
@@ -117,12 +115,12 @@ func FindLogFile(w http.ResponseWriter, r *http.Request) {
 	rows, err := initialize.Db.Query("SELECT accountId,path,fileName,date FROM LogInfo WHERE accountId = ?", accountId)
 	defer rows.Close()
 	result := make(map[string]interface{})
-	datas := []LogFile{}
+	datas := []LogFileParam{}
 	if err != nil {
 		panic("创建sql句柄错误")
 	}
 	for rows.Next() {
-		data := LogFile{}
+		data := LogFileParam{}
 		err = rows.Scan(&data.AccountId, &data.Path, &data.FileName, &data.Date)
 		aterr.CheckErr(err)
 		datas = append(datas, data)

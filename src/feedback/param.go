@@ -1,6 +1,14 @@
 package feedback
 
-type ProblemInfo struct {
+
+type LogFileParam struct {
+	AccountId string
+	Date      string
+	Path      string
+	FileName  string
+}
+
+type ProblemInfoParam struct {
 	Id          int
 	AccountId   string
 	VpnId       string

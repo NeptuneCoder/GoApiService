@@ -1,6 +1,7 @@
 package event
 
-type Event struct {
+
+type EventParam struct {
 	Timestamp  string `json:"timestamp"`
 	Event      string `json:"event"`
 	TimePhone  string `json:"timePhone"`
@@ -14,4 +15,18 @@ type Event struct {
 	Segment    string `json:"segment"`
 	Level      string `json:"level"`
 	SdkVersion string `json:"sdkVersion"`
+}
+
+
+type PayStatusParam struct {
+	VpnId       string
+	Country     string
+	Version     string
+	DollarPrice string
+	Type        string
+	ResultCode  string
+	Level       string
+	Code        string
+	TimeStr     string
+	Result      string
 }

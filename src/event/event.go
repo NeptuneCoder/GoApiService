@@ -20,7 +20,7 @@ func SaveEvent(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	con, _ := ioutil.ReadAll(r.Body) //获取post的数据
 	fmt.Println(string(con))
-	event := &Event{}
+	event := &EventParam{}
 	json.Unmarshal(con, &event)
 	SaveEvent2DB(event)
 	result := make(map[string]interface{})
@@ -33,7 +33,7 @@ func SaveEvent(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func SaveEvent2DB(data *Event) {
+func SaveEvent2DB(data *EventParam) {
 	//插入数据
 	stmt, err := initialize.Db.Prepare("INSERT INTO EventTab(event,timestamp,timePhone,uuid,androidid,phoneType,language,country,appVersion,osVersion,segment,level,sdkVersion) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)")
 	defer stmt.Close()
@@ -46,7 +46,7 @@ func SaveEvent2DB(data *Event) {
 
 
 
-func insertPayStatusData(ps *PayStatus) {
+func insertPayStatusData(ps *PayStatusParam) {
 	fmt.Println("ps.Result === === === === ", ps.Result)
 	//插入数据
 	stmt, err := initialize.Db.Prepare("INSERT INTO PaymentStatus(vpnId,country,version,dollarPrice,type,level,code,result,timeStr) VALUES(?,?,?,?,?,?,?,?,?)")
@@ -66,7 +66,7 @@ func PaymentStatus(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	ps := &PayStatus{}
+	ps := &PayStatusParam{}
 	json.Unmarshal(result, &ps)
 	insertPayStatusData(ps)
 

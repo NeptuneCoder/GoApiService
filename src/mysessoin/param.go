@@ -2,7 +2,7 @@ package mysessoin
 
 import "time"
 
-type Cookie struct {
+type CookieParam struct {
 	AccountId string
 	Token     string
 	CurTime   int64

@@ -29,12 +29,12 @@ func GetProductInfo(w http.ResponseWriter, r *http.Request) {
 	//获取所在国家
 	rows, err := initialize.Db.Query("SELECT serviceType,ad,video,speed,image,serviceExplain FROM ServiceTypeTab")
 	defer rows.Close()
-	var service []ServiceType
+	var service []ServiceTypeParam
 	if err != nil {
 		panic("创建sql句柄错误")
 	}
 	for rows.Next() {
-		data := ServiceType{}
+		data := ServiceTypeParam{}
 		err = rows.Scan(&data.ServiceType, &data.Ad, &data.Video, &data.Speed, &data.Image, &data.ServiceExplain)
 		aterr.CheckErr(err)
 		service = append(service, data)

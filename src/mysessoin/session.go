@@ -11,18 +11,16 @@ import (
 	"time"
 )
 
-var userStatus = make(map[string]*Cookie)
+var userStatus = make(map[string]*CookieParam)
 
-
-
-func (this Cookie) isExist() bool {
+func (this CookieParam) isExist() bool {
 	return this.AccountId != ""
 }
-func (this Cookie) updateValidTime() {
+func (this CookieParam) updateValidTime() {
 	this.ValidTime = 24 * 10 * 60 * 60 * time.Second
 }
 
-func (this Cookie) isValid() bool {
+func (this CookieParam) isValid() bool {
 	return this.CurTime+int64(this.ValidTime) > time.Now().UnixNano()
 }
 
@@ -40,7 +38,7 @@ func GenerateCookie(accountId string) (error) {
 		}
 		return nil
 	}()
-	cookie := &Cookie{AccountId: accountId,                     //
+	cookie := &CookieParam{AccountId: accountId,                //
 		Token: string(utils.Krand(28, utils.KC_RAND_KIND_ALL)), //
 		CurTime: time.Now().UnixNano(),                         //
 		ValidTime: 24 * 10 * 60 * 60 * time.Second}
@@ -107,8 +105,8 @@ func custom(r *http.Request, f func()) (res *Res, err error) {
 	return nil, errors.New(statusMsg.TOKEN_INVALID)
 }
 
-func QueryTokenByDb(token string) (res *Cookie, err error) {
-	ck := &Cookie{Token: token}
+func QueryTokenByDb(token string) (res *CookieParam, err error) {
+	ck := &CookieParam{Token: token}
 	rows, err := initialize.Db.Query("SELECT accountId,time,validTime FROM CookieTab WHERE token = ?", token)
 	if err != nil {
 		return nil, err
