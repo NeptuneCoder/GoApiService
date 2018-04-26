@@ -23,12 +23,11 @@ func main() {
 	http.HandleFunc("/payment/info", Safe(event.PaymentStatus))
 	http.HandleFunc("/save/event", Safe(event.SaveEvent))
 
-
-
 	//个人账号相关的接口
 	http.HandleFunc("/user/oauthLogin", Safe(user.Login))
 
 	//商品先关的接口
+	http.HandleFunc("/product/defineService", Safe(product.DefineNewService))
 	//新的点单接口
 	http.HandleFunc("/serve/showSetMeal2", Safe(product.GetProductInfo))
 	//老的商品接口

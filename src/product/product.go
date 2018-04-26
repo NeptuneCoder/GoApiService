@@ -10,6 +10,7 @@ import (
 	"status/statusCode"
 	"status/statusMsg"
 	"initialize"
+	"io/ioutil"
 )
 
 func GetOldProductInfo(w http.ResponseWriter, r *http.Request) {
@@ -60,4 +61,26 @@ func PaymentInfo(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Header.Get("language"))
 	fmt.Println("value:", r.Form.Get("key"))
 	utils.RStatus(w, statusCode.SUCCESS, "支付成功", "{\"key\":\"\"}")
+}
+
+func DefineNewService(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+
+		defer r.Body.Close()
+		con, _ := ioutil.ReadAll(r.Body) //获取post的数据
+		stp := &ServiceTypeParam{}
+		json.Unmarshal(con, &stp)
+
+		stmt, err := initialize.Db.Prepare("INSERT INTO EventTab(serviceType,ad,Video,speed,image,serviceExplain) VALUES(?,?,?,?,?,?)")
+		defer stmt.Close()
+		aterr.CheckErr(err)
+		res, err := stmt.Exec(stp.ServiceType, stp, stp.Ad, stp.Video, stp.Speed, stp.Image, stp.ServiceExplain)
+		aterr.CheckErr(err)
+		_, err = res.LastInsertId()
+		aterr.CheckErr(err)
+		utils.RStatus(w, statusCode.SUCCESS, statusMsg.SAVE_SUCCES, "")
+	} else {
+		utils.RStatus(w, statusCode.FAILED, statusMsg.POST_METHOD, "")
+	}
+
 }

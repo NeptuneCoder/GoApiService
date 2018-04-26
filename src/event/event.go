@@ -18,7 +18,6 @@ import (
 func SaveEvent(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	con, _ := ioutil.ReadAll(r.Body) //获取post的数据
-	fmt.Println(string(con))
 	event := &EventParam{}
 	json.Unmarshal(con, &event)
 	SaveEvent2DB(event)

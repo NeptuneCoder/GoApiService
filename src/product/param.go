@@ -1,6 +1,5 @@
 package product
 
-
 type ServiceTypeParam struct {
 	ServiceType    string `josn:"serviceType"`
 	Ad             string `josn:"ad"`
@@ -10,7 +9,6 @@ type ServiceTypeParam struct {
 	ServiceExplain string `josn:"serviceExplain"`
 	Products       []ProductParam
 }
-
 
 type ProductParam struct {
 	serviceType string

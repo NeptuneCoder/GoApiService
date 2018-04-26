@@ -16,4 +16,6 @@ const (
 	CREATE_SQL_OBJ_ERROR    = "创建sql句柄错误"
 	GERERNATE_ORDER_SUCCESS = "生成订单成功"
 	SERVICE_TYPE            = "成功获取服务类型"
+
+	POST_METHOD = "请使用post请求"
 )
