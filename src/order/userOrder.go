@@ -11,7 +11,7 @@ import (
 func GetMyOrder(w http.ResponseWriter, r *http.Request) {
 	_, err := mysessoin.CheckSession(r)
 	if err != nil {
-		utils.OkStatus(w, statusCode.LOGIN_INVALID, statusMsg.LOGIN_INVALID, "")
+		utils.RStatus(w, statusCode.LOGIN_INVALID, statusMsg.LOGIN_INVALID, "")
 		return
 	}
 }

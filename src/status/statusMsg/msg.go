@@ -13,5 +13,7 @@ const (
 	SAVE_SUCCES   = "存储成功"
 	SUBMIT_SUCCES = "反馈成功"
 
-	CREATE_SQL_OBJ_ERROR = "创建sql句柄错误"
+	CREATE_SQL_OBJ_ERROR    = "创建sql句柄错误"
+	GERERNATE_ORDER_SUCCESS = "生成订单成功"
+	SERVICE_TYPE            = "成功获取服务类型"
 )

@@ -56,7 +56,7 @@ func FindProblemContent(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, data)
+	utils.RStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, data)
 
 }
 
@@ -83,7 +83,7 @@ func LastNewContent(w http.ResponseWriter, r *http.Request) {
 		data = append(data, plm)
 
 	}
-	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, "")
+	utils.RStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, "")
 
 }
 func GetFile(w http.ResponseWriter, r *http.Request) {
@@ -111,7 +111,7 @@ func FindLogFile(w http.ResponseWriter, r *http.Request) {
 		aterr.CheckErr(err)
 		datas = append(datas, data)
 	}
-	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, "")
+	utils.RStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, "")
 }
 
 func UploadLog(w http.ResponseWriter, r *http.Request) {
@@ -141,7 +141,7 @@ func UploadLog(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		utils.OkStatus(w, statusCode.SUCCESS, statusMsg.SUBMIT_SUCCES, "")
+		utils.RStatus(w, statusCode.SUCCESS, statusMsg.SUBMIT_SUCCES, "")
 	}
 }
 

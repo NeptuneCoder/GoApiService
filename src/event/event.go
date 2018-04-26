@@ -22,7 +22,7 @@ func SaveEvent(w http.ResponseWriter, r *http.Request) {
 	event := &EventParam{}
 	json.Unmarshal(con, &event)
 	SaveEvent2DB(event)
-	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.SAVE_SUCCES, "")
+	utils.RStatus(w, statusCode.SUCCESS, statusMsg.SAVE_SUCCES, "")
 
 }
 
@@ -60,5 +60,5 @@ func PaymentStatus(w http.ResponseWriter, r *http.Request) {
 	savePayStatusData(ps)
 
 	athttp.HttpRequest(utils.SendNotify(initialize.BaseConfig.PayRebootUrl, string(bytes.NewBuffer(result).String())))
-	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.SUBMIT_SUCCES, "")
+	utils.RStatus(w, statusCode.SUCCESS, statusMsg.SUBMIT_SUCCES, "")
 }
