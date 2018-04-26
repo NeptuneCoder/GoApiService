@@ -6,7 +6,7 @@ type EventParam struct {
 	Event      string `json:"event"`
 	TimePhone  string `json:"timePhone"`
 	Uuid       string `json:"uuid"`
-	Androidid  string `json:"androidid"`
+	AndroidId  string `json:"androidid"`
 	PhoneType  string `json:"phoneType"`
 	Language   string `json:"language"`
 	Country    string `json:"country"`

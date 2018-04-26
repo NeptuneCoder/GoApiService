@@ -36,7 +36,7 @@ func SendNotify(url string, message string) func() (*http.Request, error) {
 		return req, nil
 	}
 }
-func OkStatus(w http.ResponseWriter, code int, msg, qr string) {
+func OkStatus(w http.ResponseWriter, code int, msg, qr interface{}) {
 	result := make(map[string]interface{})
 	result["code"] = code
 	result["msg"] = msg

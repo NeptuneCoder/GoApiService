@@ -6,4 +6,6 @@ const (
 	SUCCESS = 200 //invalid
 	TOKNE_INVALID = 4001 //invalid
 
+	FAILED  = 300
+
 )

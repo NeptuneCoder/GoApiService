@@ -15,6 +15,7 @@ import (
 	"initialize"
 	"utils"
 	"status/statusCode"
+	"status/statusMsg"
 )
 
 func insertProblemData(uid, aid, problem, contact, timeStr, appName, version string) {
@@ -36,35 +37,26 @@ func insertLogData(uid, time, path, fileName string) {
 
 	res, err := stmt.Exec(uid, time, path, fileName)
 	aterr.CheckErr(err)
-	id, err := res.LastInsertId()
+	_, err = res.LastInsertId()
 	aterr.CheckErr(err)
-	fmt.Println(id)
 }
 
 func FindProblemContent(w http.ResponseWriter, r *http.Request) {
 	vpnId := r.FormValue("vpnId")
-	fmt.Println("vpnId", "vpnId = "+vpnId)
 	//查询数据
 	rows, err := initialize.Db.Query("SELECT vpnId,accountId,problem,contactInfo,date FROM ProblemInfo WHERE vpnId = ?", vpnId)
-	defer func() {
-		rows.Close()
-	}()
-	result := make(map[string]interface{})
+	defer rows.Close()
 	var data []ProblemInfoParam
 	aterr.CheckErr(err)
 	for rows.Next() {
 		plm := ProblemInfoParam{}
 		err = rows.Scan(&plm.VpnId, &plm.AccountId, &plm.Problem, &plm.ContactInfo, &plm.Date)
 		aterr.CheckErr(err)
-		res, _ := json.Marshal(plm)
-		fmt.Println(string(res))
 		data = append(data, plm)
 
 	}
 
-	res, err := json.Marshal(result)
-	w.Header().Set("Content-Type", "application/json")
-	utils.OkStatus(w, statusCode.SUCCESS, "查询成功", string(res))
+	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, data)
 
 }
 
@@ -75,15 +67,12 @@ type QueryBean struct {
 func LastNewContent(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	con, _ := ioutil.ReadAll(r.Body) //获取post的数据
-	fmt.Println(string(con))
 	qb := &QueryBean{}
 	json.Unmarshal(con, &qb)
-	fmt.Println("vpnId", "count = "+string(qb.Count))
 	//查询数据
 	rows, err := initialize.Db.Query("SELECT _id,vpnId,accountId,problem,contactInfo,date FROM ProblemInfo ORDER BY _id DESC limit ?", qb.Count)
 	defer rows.Close()
-	result := make(map[string]interface{})
-	data := []ProblemInfoParam{}
+	var data []ProblemInfoParam
 	aterr.CheckErr(err)
 	for rows.Next() {
 		plm := ProblemInfoParam{}
@@ -94,9 +83,7 @@ func LastNewContent(w http.ResponseWriter, r *http.Request) {
 		data = append(data, plm)
 
 	}
-	res, err := json.Marshal(result)
-	w.Header().Set("Content-Type", "application/json")
-	utils.OkStatus(w, statusCode.SUCCESS, "查询成功", string(res))
+	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, "")
 
 }
 func GetFile(w http.ResponseWriter, r *http.Request) {
@@ -114,10 +101,9 @@ func FindLogFile(w http.ResponseWriter, r *http.Request) {
 	//查询数据
 	rows, err := initialize.Db.Query("SELECT accountId,path,fileName,date FROM LogInfo WHERE accountId = ?", accountId)
 	defer rows.Close()
-	result := make(map[string]interface{})
-	datas := []LogFileParam{}
+	var datas []LogFileParam
 	if err != nil {
-		panic("创建sql句柄错误")
+		panic(statusMsg.CREATE_SQL_OBJ_ERROR)
 	}
 	for rows.Next() {
 		data := LogFileParam{}
@@ -125,13 +111,7 @@ func FindLogFile(w http.ResponseWriter, r *http.Request) {
 		aterr.CheckErr(err)
 		datas = append(datas, data)
 	}
-
-	result["data"] = datas
-	result["code"] = 200
-	result["msg"] = "查询成功"
-	res, err := json.Marshal(result)
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, string(res))
+	utils.OkStatus(w, statusCode.SUCCESS, statusMsg.QUERY_SUCCES, "")
 }
 
 func UploadLog(w http.ResponseWriter, r *http.Request) {
@@ -150,9 +130,6 @@ func UploadLog(w http.ResponseWriter, r *http.Request) {
 		currentTime := time.Now().Format("2006-01-02T15:04:05Z07:00")
 
 		insertProblemData(uid, vpnId, problem, contactInfo, currentTime, appName, version)
-		result := make(map[string]interface{})
-		result["code"] = 200
-		result["msg"] = "提交成功"
 		////如果有文件，则上传文件,log为上传文件的tag
 
 		mf := r.MultipartForm
@@ -164,11 +141,7 @@ func UploadLog(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		data, err := json.Marshal(result)
-		fmt.Println(string(data))
-		aterr.CheckErr(err)
-		w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, string(data))
+		utils.OkStatus(w, statusCode.SUCCESS, statusMsg.SUBMIT_SUCCES, "")
 	}
 }
 
